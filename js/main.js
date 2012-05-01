@@ -54,7 +54,7 @@ var detectBrowser = function() {
 
 function initUITools () {
 	// Initial cancel button in editor page
-	$('#editor > div[data-role="header"] > a[href="#home"]').click(function(e) {
+	$('#editor > div[data-role="header"] > a[href="#samples"]').click(function(e) {
 		var quitEditing = confirm('Are you sure to cancel ?');
 		
 		// When clicked cancel, ignore the decision.
@@ -68,11 +68,6 @@ function initUITools () {
 		originImage.removeAttribute('width');
 		originImage.removeAttribute('height');
 	});
-	
-	// Set the save function.
-    $('#editor > div[data-role="header"] > a[href="#save"]').click(function() {
-        window.open(canvas.toDataURL('image/png'));
-    });
 	
 	// Initial toolbar in editor page
 	$('#tabToolbar a').click(function(e) {
@@ -148,9 +143,12 @@ function initUITools () {
 	});
 	
 	$('div#editor > div[data-role="footer"] > div#tools > div#file > div > a[href="#save"]').click(function(e) {
-		// TODO: Complete the save feature.
-		alert('The feature is not implemented yet');
-		return false;
+		if(browser.type == 'Tizen') {
+			alert('The feature is not implemented yet');
+			return false;
+		}
+		
+        window.open(canvas.toDataURL('image/png'));
 	});
 }
 
@@ -235,7 +233,7 @@ var init = function () {
         browser.initialFileBrowser();
     } else {
         printError({message: 'Web browser does not support file system access'});
-        $('a[href="#browser"]').parent().hide();
+        $('div[data-id="browserFooter"]').hide(); // Hide footer in browser page.
     }
 };
 $(document).ready(init);

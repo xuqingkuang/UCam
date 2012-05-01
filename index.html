@@ -18,11 +18,6 @@
     <script type="text/javascript" src="./js/jquery.lazyload.js"></script>
     
     <script type="text/javascript" src="./js/main.js"></script>
-    <script type="text/javascript">
-    	<!-- $(document).bind("mobileinit", function() { --> <!-- Buggy here -->
-    		$.mobile.page.prototype.options.addBackBtn=true;
-    	<!-- }); -->
-    </script>
 </head>
 
 <body>
@@ -46,11 +41,12 @@
     <div id="samples" data-role="page">
         <div data-role="header">
             <h1>Samples</h1>
+            <a href="#home" data-icon="arrow-l">Back</a>
         </div>
         
         <div id="sampleGallery" data-role="content"></div>
         
-        <div data-role="footer" data-id="fool" data-position="fixed" data-theme="a">
+        <div data-role="footer" data-id="browserFooter" data-position="fixed" data-theme="a">
             <div data-role="navbar">
                 <ul>
                     <li><a href="#samples" class="ui-btn-active">Samples</a></li>
@@ -65,6 +61,7 @@
     <div id="browser" data-role="page">
         <div data-role="header">
             <h1>Select a photo</h1>
+            <a href="#home" data-icon="arrow-l">Back</a>
         </div>
         <div data-role="content">
             <ul id="tree" class="filetree">
@@ -74,7 +71,7 @@
                 </li>
             </ul>
         </div>
-        <div data-role="footer" data-id="fool" data-position="fixed" data-theme="a">
+        <div data-role="footer" data-id="browserFooter" data-position="fixed" data-theme="a">
             <div data-role="navbar">
                 <ul>
                     <li><a href="#samples">Samples</a></li>
@@ -88,7 +85,7 @@
     <div id="editor" data-role="page">
         <div data-role="header" data-position="fixed" data-theme="a">
             <h1>Editor</h1>
-            <a href="#home" data-icon="arrow-l">Back</a>
+            <a href="#samples" data-icon="arrow-l">Back</a>
         </div><!-- /header -->
 
         <div data-role="content">
