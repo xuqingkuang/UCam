@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="UCam - The your camera."/>
+
+    <title>UCam</title>
+
+    <link rel="stylesheet" href="./css/jquery.mobile-1.0.1.css"/>
+    <link rel="stylesheet" href="./css/jquery.treeview.css"/>
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <script type="text/javascript" src="./js/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="./js/jquery.mobile-1.0.1.js"></script>
+    <script type="text/javascript" src="./js/jquery.treeview.js"></script>
+    
+    <script type="text/javascript" src="./js/main.js"></script>
+    <script type="text/javascript">
+    	<!-- $(document).bind("mobileinit", function() { --> <!-- Buggy here -->
+    		$.mobile.page.prototype.options.addBackBtn=true;
+    	<!-- }); -->
+    </script>
+</head>
+
+<body>
+	<!-- Home Page -->
+    <div id="home" data-role="page">
+        <div data-role="header" data-position="fixed" data-theme="a">
+            <h1>UCam</h1>
+        </div><!-- /header -->
+
+        <div data-role="content">
+            <a href="#samples" data-role="button" data-icon="search" data-iconpos="right">Select a photo</a>
+            <a href="#about" data-role="button" data-icon="info" data-iconpos="right" >About</a>
+        </div><!-- /content -->
+
+        <div data-role="footer"  data-id="copyright" data-position="fixed">
+            <p>&copy; Thunder Software Technology Co., Ltd.</p>
+        </div><!-- /footer -->
+    </div><!-- /page --
+    
+    <!-- Image Samples Page -->
+    <div id="samples" data-role="page">
+        <div data-role="header">
+            <h1>Samples</h1>
+        </div>
+        
+        <div id="sampleGallery" data-role="content"></div>
+        
+        <div data-role="footer" data-id="fool" data-position="fixed" data-theme="a">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#samples" class="ui-btn-active">Samples</a></li>
+                    <li><a href="#browser">Browser</a></li>
+                </ul>
+            </div><!-- /navbar -->
+        </div><!-- /footer -->
+    </div>
+    
+    
+    <!-- File Browser Page -->
+    <div id="browser" data-role="page">
+        <div data-role="header">
+            <h1>Select a photo</h1>
+        </div>
+        <div data-role="content">
+            <ul id="tree" class="filetree">
+                <li class="closed"><span class="folder">images</span>
+                    <ul id="images">
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div data-role="footer" data-id="fool" data-position="fixed" data-theme="a">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#samples">Samples</a></li>
+                    <li><a href="#browser" class="ui-btn-active">Browser</a></li>
+                </ul>
+            </div><!-- /navbar -->
+        </div><!-- /footer -->
+    </div>
+    
+    <!-- Editor Page -->
+    <div id="editor" data-role="page">
+        <div data-role="header" data-position="fixed" data-theme="a">
+            <h1>Editor</h1>
+            <a href="#home" data-icon="arrow-l">Back</a>
+        </div><!-- /header -->
+
+        <div data-role="content">
+        	<img id="originImage" origin="" />
+            <canvas id="canvas" height="480" width="480"></canvas>
+            <span id="imageName"></span>
+        </div><!-- /content -->
+
+        <div data-role="footer" data-id="fool" data-position="fixed" data-theme="a">
+            <div id="tabToolbar" data-role="navbar">
+                <ul>
+                    <!-- <li><a href="#edit">Edit</a></li> -->
+                    <li><a href="#effects"  class="ui-btn-active">Effects</a></li>
+                    <li><a href="#graffiti">Graffiti</a></li>
+                    <li><a href="#file">Save/Restore</a></li>
+                </ul>
+            </div><!-- /navbar -->
+            <div id="tools" data-role="navbar" class="ui-navbar" data-grid="d" data-role="navigation">
+            	<!-- 
+            	<div id="edit">
+            		<div id="adjustment" data-role="controlgroup" data-type="horizontal" data-mini="true">
+            		    <a href="#brightness" class="ui-btn-active">Brightness</a>
+                        <a href="#contrast">Contrast</a>
+                        <a href="#saturation">Saturation</a>
+            		</div>
+            		<div id="slidersAdjustment" data-role="fieldcontain">
+            			<div id="brightness">
+	            			<input type="range" name="brightness" id="slider" value="50" min="0" max="100"  />
+            			</div>
+            			<div id="contrast" style="display: none;">
+            				<input type="range" name="contrast" id="slider" value="50" min="0" max="100" />
+            			</div>
+            			<div id="saturation" style="display: none;">
+            			    <input type="range" name="saturation" id="slider" value="50" min="0" max="100" />
+            			</div>
+            		</div>
+            	</div><!-- /edit -->
+            	
+                <div id="effects" data-theme="a" style="display: none;">
+            		<div data-role="controlgroup">
+            		    <a href="#grayscale" class="normal">Grayscale</a>
+                        <a href="#brightness" class="normal">Brightness</a>
+                        <a href="#threshold" class="normal">Threshold</a>
+                        <a href="#sharpen" class="convolute">Sharpen</a>
+                        <a href="#blur" class="convolute">Blur</a>
+                        <a href="#sobel" class="normal">Sobel</a>
+            		</div>
+            	</div><!-- /effects -->
+            	<div id="graffiti" data-theme="a" style="display: none;">
+            		<div id="colorSelector" data-role="controlgroup" data-type="horizontal">
+            		    <a href="#black" data-iconpos="notext" class="bg-black">Black</a>
+                        <a href="#white" data-iconpos="notext" class="bg-white">White</a>
+                        <a href="#red" data-iconpos="notext" class="bg-red">Red</a>
+                        <a href="#yellow" data-iconpos="notext" class="bg-yellow">Yellow</a>
+                        <a href="#blue" data-iconpos="notext" class="bg-blue">Blue</a>
+                        <a href="#green" data-iconpos="notext"class="bg-green">Green</a>
+            		</div>
+            	</div><!-- /graffiti -->
+            	<div id="file" data-theme="a" style="display: none;">
+            		<div data-role="controlgroup" data-type="horizontal">
+            		    <a href="#restore" data-theme="a"  data-icon="back">Restore</a>
+                        <a href="#save" data-theme="b" data-icon="check">Save</a>
+            		</div>
+            	</div><!--  /file  -->
+            </div><!-- /tools -->
+        </div><!-- /footer -->
+    </div><!-- /page -->
+    
+    
+    <!-- About Page -->
+    <div id="about" data-role="page">
+        <div data-role="header">
+            <h1>About UCam</h1>
+        </div>
+        <div data-role="content">
+            <img src="logo.png" alt="Logo" width="280" height="96" />
+            <p>Create by UCam dev team from Thunder Software Technology Co., Ltd. &copy; 2012.</p>
+        </div>
+    </div>
+</body>
+</html>

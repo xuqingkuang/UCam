@@ -1,0 +1,43 @@
+ul.treeview { background-color: white; }
+
+/******************************************
+ * UCam stylesheets
+ ******************************************/ 
+
+/************ Sample Gallery Page ******************/
+
+div#sampleGallery { margin: 0 auto; }
+div.crop { width: 148px; height: 148px; overflow: hidden; float: left; margin: 4px; }
+div.crop img { width: 140px; height: 140px; border: 4px solid #ccc; }
+
+/************ File Browser Page ******************/
+
+div#browser { background-color: white; }
+div#browser > div[data-role="content"] { padding: 0px; }
+
+/************ Edit Page ******************/
+
+div#editor > div[data-role="content"] { padding: 0px; }
+
+/* Effects tab */
+
+div#editor > div[data-role="footer"] > div#tools > div#effects > div > a { width: 100%; }
+
+/* Graffiti tab */
+
+div#colorSelector > a { background-image: none; width: 51px; }
+
+.bg-black { background-color: black; }
+.bg-white { background-color: white; }
+.bg-red { background-color: red; }
+.bg-yellow { background-color: yellow; }
+.bg-blue { background-color: blue; }
+.bg-green { background-color: green; }
+
+/* File tab */
+
+div#file > div[data-role="controlgroup"] > a { width: 155px; margin: 5px auto; padding: 0px; }
+
+/* About Page */
+
+div#about > div[data-role="content"] > * { margin: 5px auto; }

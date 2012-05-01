@@ -1,0 +1,19 @@
+/* ::::: http://jquery.bassistance.de/treeview/demo/screen.css ::::: */
+
+html, body { height: 100%; margin: 0pt; padding: 0pt; }
+/* ::::: http://jquery.bassistance.de/treeview/jquery.treeview.css ::::: */
+
+.treeview, .treeview ul { padding: 0pt; margin: 0pt; list-style: none outside none; }
+.treeview ul { background-color: white; margin-top: 4px; }
+.treeview .hitarea { background: url('images/treeview/treeview-default.gif') no-repeat scroll -64px -25px transparent; height: 16px; width: 16px; margin-left: -16px; float: left; cursor: pointer; }
+.treeview li { margin: 0pt; padding: 3px 0pt 3px 16px; }
+.treeview li { background: url('images/treeview/treeview-default-line.gif') no-repeat scroll 0pt 0pt transparent; }
+.treeview li.collapsable, .treeview li.expandable { background-position: 0pt -176px; }
+.treeview .expandable-hitarea { background-position: -80px -3px; }
+.treeview li.last { background-position: 0pt -1766px; }
+.filetree li { padding: 3px 0pt 2px 16px; }
+.filetree span.folder, .filetree span.file { padding: 1px 0pt 1px 16px; display: block; }
+.filetree span.folder { background: url('images/treeview/folder.gif') no-repeat scroll 0pt 0pt transparent; }
+.filetree li.expandable span.folder { background: url('images/treeview/folder-closed.gif') no-repeat scroll 0pt 0pt transparent; }
+.filetree span.file { background: url('images/treeview/file.gif') no-repeat scroll 0pt 0pt transparent; }
+html, body { border: 0pt none; margin: 0pt; padding: 0pt; }
