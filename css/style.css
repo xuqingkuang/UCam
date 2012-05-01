@@ -8,7 +8,7 @@ ul.treeview { background-color: white; }
 
 div#sampleGallery { margin: 0 auto; }
 div.crop { width: 148px; height: 148px; overflow: hidden; float: left; margin: 4px; }
-div.crop img { width: 140px; height: 140px; border: 4px solid #ccc; }
+div.crop img.lazy { width: 140px; height: 140px; border: 4px solid #ccc; display: none; }
 
 /************ File Browser Page ******************/
 

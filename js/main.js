@@ -164,7 +164,10 @@ function initSampleGallery(images_num) {
 			'href', 'javascript:moveImageToEditor(\'' + img_path + '\')'
 		);
 		
-		var img = $('<img>').attr({'src': img_path, 'alt': i+'.jpg'});
+		var img = $('<img>').attr({
+			'class': 'lazy', 'data-original': img_path, 'alt': i+'.jpg',
+			'width': '140', 'height': '140'
+		});
 		
 		link.html(img);
 		container.html(link);
@@ -172,6 +175,21 @@ function initSampleGallery(images_num) {
 		
 		i += 1;
 	}
+	
+	// Process the images
+	var lazyImages = $('img.lazy')
+	lazyImages.show().lazyload({'effect': 'fadeIn'});
+	
+	print('Binding page show page for div#samples');
+	$('div#samples').live('pageshow', function(e) {
+		lazyImages.each(function(i) {
+			setTimeout(function() {
+				// console.log(lazyImages[i]);
+				$(lazyImages[i]).trigger('appear');
+			}, 500*i);
+		});
+	});
+	
 }
 
 //Initialize function
@@ -474,7 +492,7 @@ function print(msg) {
 
 function printError(e) {
 	if(window.console)
-		console.log("- An error occurred " + e.message);
+		console.log("- " + e.message);
 }
 
 
