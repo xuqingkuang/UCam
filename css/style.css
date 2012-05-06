@@ -1,3 +1,7 @@
+/******************************************
+ * JQuery mobile override
+ ******************************************/ 
+
 ul.treeview { background-color: white; }
 
 /******************************************
@@ -7,7 +11,7 @@ ul.treeview { background-color: white; }
 /************ Sample Gallery Page ******************/
 
 div#sampleGallery { margin: 0 auto; }
-div.crop { width: 148px; height: 148px; overflow: hidden; float: left; margin: 4px; }
+div.crop { width: 164px; height: 164px; overflow: hidden; float: left; }
 div.crop img.lazy { width: 140px; height: 140px; border: 4px solid #ccc; display: none; }
 
 /************ File Browser Page ******************/
@@ -17,27 +21,55 @@ div#browser > div[data-role="content"] { padding: 0px; }
 
 /************ Edit Page ******************/
 
-div#editor > div[data-role="content"] { padding: 0px; }
+div#editor > div[data-role="header"] > div.ui-select { position: absolute; top: 4px; right: 4px; margin: 0; padding: 0 }
+
+div#editor > div#editorContent { position: relative; padding: 0px; overflow: hidden; width: 480px; height: 480px; }
+div#editor .topLeft { position:absolute; top: 0px; left: 0px; }
 
 /* Effects tab */
 
-div#editor > div[data-role="footer"] > div#tools > div#effects > div > a { width: 100%; }
+div#effects .ui-btn-text { color: white; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; }
+div#effects .ui-btn-inner { text-overflow: clip; }
+
+div#effects a { margin-left: 2px; }
+
+a#effect_blur { background-image: url("../res/filters/blur.png"); background-size: 64px 64px; width: 64px; height: 64px;}
+a#effect_grayscale { color: black; background-image: url("../res/filters/grayscale.png"); background-size: 64px 64px; width: 64px; height: 64px;}
+a#effect_sharpen { background-image: url("../res/filters/sharpen.png"); background-size: 64px 64px; width: 64px; height: 64px;}
+a#effect_sobel { background-image: url("../res/filters/sobel.png"); background-size: 64px 64px; width: 64px; height: 64px;}
+a#effect_threshold { background-image: url("../res/filters/threshold.png"); background-size: 64px 64px; width: 64px; height: 64px;}
 
 /* Graffiti tab */
 
-div#colorSelector > a { background-image: none; width: 51px; }
+div#graffiti > a#black { background: transparent; background-image: none; width: 51px;  background-color: black; }
+div#graffiti > a#white { background: transparent; background-image: none; width: 51px; background-color: white; }
+div#graffiti > a#red { background: transparent; background-image: none; width: 51px; background-color: red; }
+div#graffiti > a#yellow { background: transparent; background-image: none; width: 51px; background-color: yellow; }
+div#graffiti > a#blue { background: transparent; background-image: none; width: 51px; background-color: blue; }
+div#graffiti > a#green { background: transparent; background-image: none; width: 51px; background-color: green; }
 
-.bg-black { background-color: black; }
-.bg-white { background-color: white; }
-.bg-red { background-color: red; }
-.bg-yellow { background-color: yellow; }
-.bg-blue { background-color: blue; }
-.bg-green { background-color: green; }
+/* Decorations tab */
+div#tools > div#decors .ui-btn-inner { padding-top: 4px; }
 
-/* File tab */
+div.decoration { position: absolute !important; top: 20px; left: 20px; z-index: 100; }
+div.decoration > a.closeBtn { position: relative; top: 10px; right: 10px; }
 
-div#file > div[data-role="controlgroup"] > a { width: 155px; margin: 5px auto; padding: 0px; }
 
-/* About Page */
+/* Border related elements */
+img.corner { z-index: 300; }
+img.border { z-index: 200; }
+
+img#corner1 { position: absolute; top: 0px; left: 0px; }
+img#corner2 { -webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); position: absolute; top: 0px; right: 0px;}
+img#corner3 { -webkit-transform: rotate(180deg); -moz-transform: rotate(180deg); position: absolute; bottom: 0px; right: 0px; }
+img#corner4 { -webkit-transform: rotate(270deg); -moz-transform: rotate(270deg); position: absolute; bottom: 0px; left: 0px; }
+img#border1 { position: absolute; top: 0px; left: 0px; height: 100px; }
+img#border2 { -webkit-transform: rotate(90deg); -moz-transform: rotate(90deg) translate(0px, -50px); position: absolute; top: 0px;  height: 100px; }
+img#border3 { -webkit-transform: rotate(180deg); -moz-transform: rotate(180deg); position: absolute; bottom: 0px; left: 0px; height: 100px; }
+img#border4 { -webkit-transform: rotate(270deg); -moz-transform: rotate(270deg) translate(0px, -50px); position: absolute; top: 0px; height: 100px; }
+
+div#tools > div#borders .ui-btn-inner { padding-top: 4px; }
+
+/************ About Page ******************/
 
 div#about > div[data-role="content"] > * { margin: 5px auto; }

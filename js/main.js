@@ -14,15 +14,16 @@ var debug = true; // Debug or not
 
 var browser;
 
-var originImage;
-var image;
+var originImage, image, filteredImageData;
 
-var canvas;
-var context;
+var canvas, context;
+
 var texture;
 
 var filters;
 var pencil;
+
+var putDecorations = [];
 
 var fakeScreenWidth = 480;
 
@@ -96,37 +97,54 @@ function initUITools () {
 		}
 	});
 	
-	$('#adjustment a').click(function(e) {
+	// Initial the edit features
+	// -- Normal filter adjustment
+	$('div#edit > div.normal > a').click(function(e) {
 		var link_element = $(this);
-		
-		// Highlight current tab
-		link_element.parent().find('a').removeClass('ui-btn-active');
-		link_element.addClass('ui-btn-active');
-		
-		// Switch to the tab
-		var link_to = link_element.attr('href').substring(1, 100);
-		print('Switch to tab - ' + link_to);		
-		$('#slidersAdjustment > div').hide();
-		$('#slidersAdjustment > div#' + link_to).show();
+		filter_name = link_element.parent().attr('id');
+		value = parseInt(link_element.attr('href').substring(1, 100));
+		print('Executing adjustment - ' + filter_name + ' - with argument - ' + value);
+		filters.drawFilterImage(filters[filter_name], image, value);
 	});
 	
-	// Initial the filters
-	$('div#effects > div > a.normal').click(function(e) {
+	// -- Initial the filters
+	var normalEffectEvent = function(e) {
 		var link_element = $(this);
 		var link_to = link_element.attr('href').substring(1, 100);
 		print('Applied normal filter - ' + link_to);
 		filters.drawFilterImage(filters[link_to], image);
-	});
+	};
 	
-	$('div#effects > div > a.convolute').click(function(e) {
+	var convoluteEffectEvent = function(e) {
 		var link_element = $(this);
 		var link_to = link_element.attr('href').substring(1, 100);
 		print('Applied convolute filter - ' + link_to);
 		filters.drawFilterImage(filters.convolute, image, filters.convoluteArguments[link_to]);
-	});
+	};
 	
-	// Initial the color selector
-	$('div#graffiti > div#colorSelector > a').click(function(e) {
+	for (var i=0; i<filters.effects.length; i++) {
+		var name = filters.effects[i][0];
+		var type = filters.effects[i][1];
+		var shortName = filters.effects[i][2];
+		
+		var element = $('<a>').attr({'id': 'effect_' + name, 'href': '#' + name, 'data-role': 'button'});
+		element.html(shortName);
+
+		switch (type) {
+			case 'normal':
+				element.click(normalEffectEvent);
+				break;
+			case 'convolute':
+				element.click(convoluteEffectEvent);
+				break;
+		}
+		
+		element.button({'theme':'a', 'refresh': true});
+		$('#effects').append(element);
+	}
+	
+	// -- Initial the color selector
+	$('div#graffiti > a').click(function(e) {
 		var link_element = $(this);
 		var link_to = link_element.attr('href').substring(1, 100);
 		print('Change pencil color to - ' + link_to);
@@ -138,56 +156,116 @@ function initUITools () {
 	});
 	
 	// Initial the save/restore feature
-	$('div#editor > div[data-role="footer"] > div#tools > div#file > div > a[href="#restore"]').click(function(e) {
-		restoreImageToCanvas();
+	$('select[name="fileActions"]').change(function(e) {
+		switch (this.value) {
+		case 'restore':
+			restoreImage();
+			break;
+		case 'save':
+			saveImage();
+			break;
+		}
+
+		// Restore the select status
+		this.selectedIndex = 0;
+		$(this).selectmenu("refresh");
 	});
 	
-	$('div#editor > div[data-role="footer"] > div#tools > div#file > div > a[href="#save"]').click(function(e) {
-		if(browser.type == 'Tizen') {
-			alert('The feature is not implemented yet');
-			return false;
-		}
-		
-        window.open(canvas.toDataURL('image/png'));
-	});
+	// Initial the clear functions
+	$('div#decors > a#clearDecors').click(function(e) { clearDecorations(); });
+	$('div#borders > a#clearBorders').click(function(e) { clearBorders(); });
 }
 
-function initSampleGallery(images_num) {
-	i = 1;	
-	while (i <= images_num) {
-		var img_path = './samples/' + i + '.jpg';
-		
-		var container = $('<div>').attr('class', 'crop');
-		var link = $('<a>').attr(
-			'href', 'javascript:moveImageToEditor(\'' + img_path + '\')'
-		);
-		
-		var img = $('<img>').attr({
-			'class': 'lazy', 'data-original': img_path, 'alt': i+'.jpg',
-			'width': '140', 'height': '140'
-		});
-		
-		link.html(img);
-		container.html(link);
-		$('div#sampleGallery').append(container);
-		
-		i += 1;
-	}
+function initSampleGallery(num) {
+	var addSampleImages = function(num) {
+		i = 1;	
+		while (i <= num) {
+			var img_name = i + '.jpg';
+			var img_path = './res/samples/' + img_name;
+			
+			var container = $('<div>').attr('class', 'crop');
+			var link = $('<a>').attr(
+				'href', 'javascript:moveImageToEditor(\'' + img_path + '\')'
+			);
+			
+			var img = $('<img>').attr({
+				'class': 'lazy', 'data-original': img_path, 'alt': img_name,
+				'width': '140', 'height': '140'
+			});
+			
+			link.html(img);
+			container.html(link);
+			$('div#sampleGallery').append(container);
+			
+			i += 1;
+		}
+	};
+
 	
-	// Process the images
-	var lazyImages = $('img.lazy')
-	lazyImages.show().lazyload({'effect': 'fadeIn'});
-	
-	print('Binding page show page for div#samples');
-	$('div#samples').live('pageshow', function(e) {
+	print('Binding page events for div#samples');
+	$('div#samples').live('pageshow', function(e, ui) {
+		addSampleImages(num);
+		
+		// Process the images
+		var lazyImages = $('img.lazy');
+		lazyImages.lazyload({'effect': 'fadeIn'});
+		
 		lazyImages.each(function(i) {
 			setTimeout(function() {
 				// console.log(lazyImages[i]);
 				$(lazyImages[i]).trigger('appear');
-			}, 500*i);
+			}, 200*i);
 		});
 	});
 	
+	$('div#samples').live('pagehide', function(e, ui) {
+		var lazyImages = $('img.lazy');
+		lazyImages.parent().parent().remove();
+	});
+}
+
+function initDecorations (num) {
+	i = 1;	
+	while (i <= num) {
+		var img_name = i + '.png';
+		var img_path = './res/decors/' + img_name;
+		
+		var link = $('<a>').attr(
+			'href', 'javascript:putDecoration(\'' + img_path + '\')'
+		);
+		
+		var img = $('<img>').attr({
+			'class': 'decoration', 'src': img_path, 'alt': img_name,
+			'width': '48', 'height': '48'
+		});
+		
+		link.html(img);
+		link.button({'theme': 'a', 'refresh': true});
+		$('div#decors').append(link);
+		
+		i += 1;
+	}
+}
+
+function initBorders (num) {
+	i = 1;	
+	while (i <= num) {
+		var img_path = './res/borders/' + i + '/preview.jpg';
+		
+		var link = $('<a>').attr(
+			'href', 'javascript:setBorder(\'' + i + '\')'
+		);
+		
+		var img = $('<img>').attr({
+			'class': 'border', 'src': img_path, 'alt': 'Border ' + i,
+			'width': '48', 'height': '48'
+		});
+		link.html(img);
+		link.button({'theme': 'a', 'refresh': true});
+		$('div#borders').append(link);
+		
+		i += 1;
+	}
 }
 
 //Initialize function
@@ -216,7 +294,7 @@ var init = function () {
     
     // Initial the graffiti pencil
     print('Initial graffiti pencil');
-    pencil = new Pencil();
+    pencil = new Pencil(canvas, context);
     
     // Initial the toolbar switching
     print('Binding UI widgets events');
@@ -225,6 +303,12 @@ var init = function () {
     // Initial the sample gallery
     print('Initial the sample gallery');
     initSampleGallery(12); // Sample image num is 12 in current.
+    
+    // Initial the decorations in tools
+    initDecorations(4);
+    
+    // Initial the borders in tools
+    initBorders(2);
     
     // Initial the file system access
     print('Initial the tree view of file browser');
@@ -275,21 +359,36 @@ TizenBrowser.prototype.initialFileBrowser = function() {
 TizenBrowser.prototype.getScreenSize = function() {
 	print('TizenBrowser:getScreenSize - Start getting screen size.');
 	
+	
+	if(document.body.clientHeight) {
+		return [document.body.clientWidth, document.body.clientHeight];
+	} 
+	
+	if (document.documentElement.cilentWidth) {
+		return [
+		    document.documentElement.clientWidth,
+		    document.documentElement.clientHeight
+		];
+	}
+	
+	/* Buggy here */
+	
 	// Default screen size
-	var screenSize = [800, 480];
+	var screenSize = [720, 1024];
 	
 	var onSuccess = function (display) {
 		print('Screen resolutionWidth is - ' + display.resolutionWidth);
 		print('Screen resolutionHeight is - ' + display.resolutionHeight);
 		screenSize = [display.resolutionWidth, display.resolutionHeight];
+		return screenSize;
 	};
 	
 	var onError = function (error) {
 		printError(error);
+		return screenSize;
 	};
 	
 	tizen.systeminfo.getPropertyValue("Display", onSuccess, onError);
-	return screenSize;
 };
 
 
@@ -404,7 +503,7 @@ TizenBrowser.prototype.expandFS = function(id) {
         printError, // errorCallback
         'r' // FileMode
     );//end resolve()
-}
+};
 
 /**
  * Load image with FileReader (jpg, png)
@@ -418,20 +517,28 @@ function loadImage(fullPath) {
 	originImage.removeAttribute('width');
 	
 	originImage.onload = function() {
+        print('The original size of image is - ' + this.height + 'x' + this.width);
+
+		
         screenWidth = browser.getScreenSize()[0];
 
         // Set the size of image
         this.height = Math.round(this.height * screenWidth / this.width);
         this.width = screenWidth;
-        print('The size of image is - ' + this.height + 'x' + this.width);
         
+        $('div#editorContent').css({
+        	'width': this.width, 'height': this.height
+        });
+        
+        print('The image will resize to - ' + this.height + 'x' + this.width);
+
         // Set the image to image and canvas
-        restoreImageToCanvas();
+        restoreImage();
     };
     originImage.src = fullPath;
 }
 
-function restoreImageToCanvas() {
+function restoreImage() {
 	// Show the image element
 	originImage.style.display = 'block';
 	
@@ -451,6 +558,12 @@ function restoreImageToCanvas() {
     
     // Hide the image element
     originImage.style.display = 'none';
+    
+    // Remove the decorations
+    clearDecorations();
+    
+    // Remove the borders
+    clearBorders();
 }
 
 /**
@@ -469,7 +582,106 @@ function moveImageToEditor (fullPath) {
     })(fullPath);
     reader.readAsDataURL(fullPath);
     
-    $.mobile.changePage('#editor');
+    $.mobile.changePage('#editor', {transition: "slidedown"});
+}
+
+
+function saveImage() {
+	if(browser.type == 'Tizen') {
+		alert('The feature is not implemented yet');
+		return false;
+	}
+    window.open(canvas.toDataURL('image/png'));
+}
+
+function clearDecorations () {
+	// Clear old decorations
+	$('div#editorContent > div.decoration').remove();
+}
+
+function putDecoration(img_path) {
+	// Create the elements
+	var container = $('<div>').attr('class', 'decoration');
+	var img = $('<img>').attr('src', img_path).click(
+		function(e) {
+			$('.decorControl').hide();
+			$(this).parent().find('.decorControl').show();
+		}
+	);
+	
+	var closeBtn = $('<a>').attr({
+		'class': 'decorControl closeBtn', 'data-icon': "delete",
+		'data-iconpos': "notext"
+	}).click(
+		function(e) { $(this).parent().remove(); }
+	).css({'display': 'none'});
+	closeBtn.button({'refresh': true});
+	container.append(closeBtn);
+	container.append(img);
+	
+	// Bindding 
+	// img.resizable();
+	container.draggable();
+		
+	putDecorations.push(container);
+	$('div#editor > div#editorContent').append(container);
+}
+
+function clearBorders () {
+	// Clear old borders
+	$('div#editorContent > img.border').remove();
+	$('div#editorContent > img.corner').remove();
+}
+
+function setBorder (borderNo) {
+	// Clear old borders
+	clearBorders();
+	
+	// Initial the borders
+	var borders = [];
+	
+	// Generate the corner elements
+	for (var i = 1; i <= 4; i++) {
+		var element = $('<img>').attr({
+			'id': 'corner' + i,
+			'class': 'corner',
+			'src': './res/borders/' + borderNo + '/corner.png'
+		});
+		borders.push(element);
+	}
+	
+	// Generate the border elements
+	for (var i = 1; i <= 4; i++) {
+		var element = $('<img>').attr({
+			'id': 'border' + i,
+			'class': 'border',
+			'src': './res/borders/' + borderNo + '/border.png'
+		});
+		
+		switch(i) {
+			case 1:
+				element.css('width', canvas.width);
+				break;
+			case 2:
+				// FIXME: I don't know why, but it works.
+				element.css({'width': canvas.height, 'top': canvas.width/2-50 + 'px', 'left': canvas.width/2-50 + 'px'});
+				break;
+			case 3:
+				element.css('width', canvas.width);
+				break;
+			case 4:
+				// FIXME: I don't know why, but it works.
+				element.css({'width': canvas.height, 'top': canvas.width/2-50 + 'px', 'right': canvas.width/2-50 + 'px'});
+				break;
+		}
+		
+		borders.push(element);
+	}
+
+	// Add the border to container
+	for (i = 0; i < borders.length; i++) {
+		$('#editorContent').append(borders[i]);
+	}
 }
 
 /**
@@ -620,6 +832,15 @@ var Filters = function(canvas, context) {
         'sharpen':  [  0, -1,  0, -1,  5, -1, 0, -1,  0 ],
         'blur':   [ 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9 ]
     };
+    
+    this.adjustment = ['edit'];
+    this.effects = [
+        ['grayscale', 'normal', 'Gray'],
+        ['threshold', 'normal', 'B&W'],
+        ['sharpen', 'convolute', 'Sharp'],
+        ['blur', 'convolute', 'Blur'],
+        ['sobel', 'normal', 'Neon']
+    ];
 };
 
 Filters.prototype.getPixels = function(image) {
@@ -643,8 +864,9 @@ Filters.prototype.filterImage = function(filter, image, var_args) {
 };
 
 Filters.prototype.drawFilterImage = function(filter, image, var_args) {
-	var imageData = this.filterImage(filter, image, var_args);
-	return this.context.putImageData(imageData, 0, 0);
+	filteredImageData = this.filterImage(filter, image, var_args);
+	
+	return this.context.putImageData(filteredImageData, 0, 0);
 };
 
 
@@ -669,7 +891,6 @@ Filters.prototype.grayscale = function(pixels, args) {
 Filters.prototype.brightness = function(pixels, adjustment) {
 	if(!adjustment)
 		adjustment = 40;
-	
     var d = pixels.data;
     for (var i=0; i<d.length; i+=4) {
 	    d[i] += adjustment;
@@ -843,7 +1064,7 @@ Filters.prototype.convoluteFloat32 = function(pixels, weights, opaque) {
 
 var ev_canvas = function (ev) {
 	var triggerEvents = ['mousedown', 'mousemove', 'touchstart', 'touchmove'];
-	
+	ev = ev.originalEvent;
 	if(triggerEvents.indexOf(ev.type) != -1) {
 	    if (ev.targetTouches && (ev.targetTouches[0].pageX || ev.targetTouches[0].pageX == 0)) { // Mobile
 	        ev._x = ev.targetTouches[0].pageX;
@@ -863,29 +1084,24 @@ var ev_canvas = function (ev) {
 
 //This painting tool works like a drawing pencil which tracks the mouse 
 // movements.
-var Pencil = function() {
-   this.started = false;
-   this.color = 'red';
+var Pencil = function(canvas, context) {
+	this.canvas = $(canvas);
+	this.context = context;
+	
+    this.started = false;
+    this.color = 'red';
 };
 
 Pencil.prototype.bindCanvasEvents = function() {
-    canvas.addEventListener('mousedown', ev_canvas, false);
-    canvas.addEventListener('mousemove', ev_canvas, false);
-    canvas.addEventListener('mouseup',   ev_canvas, false);
-    
-    canvas.addEventListener('touchstart', ev_canvas, false);
-    canvas.addEventListener('touchmove', ev_canvas, false);
-    canvas.addEventListener('touchend',   ev_canvas, false);
+	this.canvas.live('mousedown touchstart', ev_canvas);
+	this.canvas.live('mousemove touchmove',  ev_canvas);
+	this.canvas.live('mouseup touchend', ev_canvas);
 };
 
 Pencil.prototype.unbindCanvasEvents = function() {
-    canvas.removeEventListener('mousedown', ev_canvas);
-    canvas.removeEventListener('mousemove', ev_canvas);
-    canvas.removeEventListener('mouseup', ev_canvas);
-    
-    canvas.removeEventListener('touchstart', ev_canvas);
-    canvas.removeEventListener('touchmove', ev_canvas);
-    canvas.removeEventListener('touchend', ev_canvas);
+	this.canvas.die('mousedown touchstart', ev_canvas);
+	this.canvas.die('mousemove touchmove',  ev_canvas);
+	this.canvas.die('mouseup touchend', ev_canvas);
 };
 
 

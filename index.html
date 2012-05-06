@@ -14,10 +14,17 @@
 
     <script type="text/javascript" src="./js/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="./js/jquery.mobile-1.0.1.js"></script>
+    
+    <script type="text/javascript" src="./js/jquery-ui-1.8.20.custom.min.js"></script>
+    <script type="text/javascript" src="./js/jquery.ui.touch-punch.js"></script>
+    
     <script type="text/javascript" src="./js/jquery.treeview.js"></script>
     <script type="text/javascript" src="./js/jquery.lazyload.js"></script>
     
     <script type="text/javascript" src="./js/main.js"></script>
+    <script type="text/javscript">
+	$.mobile.transitionFallbacks.slideout = "slide"
+	</script>
 </head>
 
 <body>
@@ -28,8 +35,8 @@
         </div><!-- /header -->
 
         <div data-role="content">
-            <a href="#samples" data-role="button" data-icon="search" data-iconpos="right">Select a photo</a>
-            <a href="#about" data-role="button" data-icon="info" data-iconpos="right" >About</a>
+            <a href="#samples" data-role="button" data-icon="search" data-iconpos="right" data-transition="pop">Select a photo</a>
+            <a href="#about" data-role="button" data-icon="info" data-iconpos="right" data-transition="slideup">About</a>
         </div><!-- /content -->
 
         <div data-role="footer"  data-id="copyright" data-position="fixed">
@@ -41,7 +48,7 @@
     <div id="samples" data-role="page">
         <div data-role="header">
             <h1>Samples</h1>
-            <a href="#home" data-icon="arrow-l">Back</a>
+            <a href="#home" data-icon="arrow-l" data-transition="fade">Back</a>
         </div>
         
         <div id="sampleGallery" data-role="content"></div>
@@ -49,8 +56,8 @@
         <div data-role="footer" data-id="browserFooter" data-position="fixed" data-theme="a">
             <div data-role="navbar">
                 <ul>
-                    <li><a href="#samples" class="ui-btn-active">Samples</a></li>
-                    <li><a href="#browser">Browser</a></li>
+                    <li><a href="#samples" class="ui-btn-active" data-transition="flip">Samples</a></li>
+                    <li><a href="#browser" data-transition="flip">Browser</a></li>
                 </ul>
             </div><!-- /navbar -->
         </div><!-- /footer -->
@@ -58,10 +65,10 @@
     
     
     <!-- File Browser Page -->
-    <div id="browser" data-role="page">
+    <div id="browser" data-role="page>
         <div data-role="header">
             <h1>Select a photo</h1>
-            <a href="#home" data-icon="arrow-l">Back</a>
+            <a href="#home" data-icon="arrow-l" data-transition="fade">Back</a>
         </div>
         <div data-role="content">
             <ul id="tree" class="filetree">
@@ -74,8 +81,8 @@
         <div data-role="footer" data-id="browserFooter" data-position="fixed" data-theme="a">
             <div data-role="navbar">
                 <ul>
-                    <li><a href="#samples">Samples</a></li>
-                    <li><a href="#browser" class="ui-btn-active">Browser</a></li>
+                    <li><a href="#samples" data-transition="flip">Samples</a></li>
+                    <li><a href="#browser" class="ui-btn-active"  data-transition="flip">Browser</a></li>
                 </ul>
             </div><!-- /navbar -->
         </div><!-- /footer -->
@@ -85,71 +92,56 @@
     <div id="editor" data-role="page">
         <div data-role="header" data-position="fixed" data-theme="a">
             <h1>Editor</h1>
-            <a href="#samples" data-icon="arrow-l">Back</a>
+            <a href="#samples" data-icon="arrow-l" data-transition="slideup">Back</a>
+            <select name="fileActions" data-icon="gear" data-native-menu="false">
+            	<option>Menu</option>
+            	<option value="restore">Restore</option>
+            	<option value="save">Save</option>
+            </select>
         </div><!-- /header -->
 
-        <div data-role="content">
-        	<img id="originImage" origin="" />
+        <div id="editorContent" data-role="content">
             <canvas id="canvas" height="480" width="480"></canvas>
-            <span id="imageName"></span>
+            <img id="originImage" src="" class="topLeft" />
         </div><!-- /content -->
 
         <div data-role="footer" data-id="fool" data-position="fixed" data-theme="a">
             <div id="tabToolbar" data-role="navbar">
                 <ul>
-                    <!-- <li><a href="#edit">Edit</a></li> -->
-                    <li><a href="#effects"  class="ui-btn-active">Effects</a></li>
+                    <li><a href="#effects" class="ui-btn-active">Filter</a></li>
+                    <li><a href="#decors">Deco</a></li>
+                    <li><a href="#borders">Frame</a></li>                    
+                    <li><a href="#edit">Edit</a></li>
                     <li><a href="#graffiti">Graffiti</a></li>
+                    <!-- 
                     <li><a href="#file">Save/Restore</a></li>
+                     -->
                 </ul>
             </div><!-- /navbar -->
-            <div id="tools" data-role="navbar" class="ui-navbar" data-grid="d" data-role="navigation">
-            	<!-- 
-            	<div id="edit">
-            		<div id="adjustment" data-role="controlgroup" data-type="horizontal" data-mini="true">
-            		    <a href="#brightness" class="ui-btn-active">Brightness</a>
-                        <a href="#contrast">Contrast</a>
-                        <a href="#saturation">Saturation</a>
-            		</div>
-            		<div id="slidersAdjustment" data-role="fieldcontain">
-            			<div id="brightness">
-	            			<input type="range" name="brightness" id="slider" value="50" min="0" max="100"  />
-            			</div>
-            			<div id="contrast" style="display: none;">
-            				<input type="range" name="contrast" id="slider" value="50" min="0" max="100" />
-            			</div>
-            			<div id="saturation" style="display: none;">
-            			    <input type="range" name="saturation" id="slider" value="50" min="0" max="100" />
-            			</div>
-            		</div>
-            	</div><!-- /edit -->
-            	
-                <div id="effects" data-theme="a" style="display: none;">
-            		<div data-role="controlgroup">
-            		    <a href="#grayscale" class="normal">Grayscale</a>
-                        <a href="#brightness" class="normal">Brightness</a>
-                        <a href="#threshold" class="normal">Threshold</a>
-                        <a href="#sharpen" class="convolute">Sharpen</a>
-                        <a href="#blur" class="convolute">Blur</a>
-                        <a href="#sobel" class="normal">Sobel</a>
-            		</div>
+            <div id="tools" data-role="navbar" data-grid="d" data-role="navigation" class="ui-navbar">
+                <div id="effects">
             	</div><!-- /effects -->
-            	<div id="graffiti" data-theme="a" style="display: none;">
-            		<div id="colorSelector" data-role="controlgroup" data-type="horizontal">
-            		    <a href="#black" data-iconpos="notext" class="bg-black">Black</a>
-                        <a href="#white" data-iconpos="notext" class="bg-white">White</a>
-                        <a href="#red" data-iconpos="notext" class="bg-red">Red</a>
-                        <a href="#yellow" data-iconpos="notext" class="bg-yellow">Yellow</a>
-                        <a href="#blue" data-iconpos="notext" class="bg-blue">Blue</a>
-                        <a href="#green" data-iconpos="notext"class="bg-green">Green</a>
-            		</div>
+            	<div id="decors" style="display: none;">
+            		<!-- <a id="clearDecors" href="#clear" data-theme="c">Clear</a> -->
             	</div><!-- /graffiti -->
-            	<div id="file" data-theme="a" style="display: none;">
-            		<div data-role="controlgroup" data-type="horizontal">
-            		    <a href="#restore" data-theme="a"  data-icon="back">Restore</a>
-                        <a href="#save" data-theme="b" data-icon="check">Save</a>
+            	<div id="borders" style="display: none;">
+            		<a id="clearBorders" href="#clear" data-theme="c">Clear</a>
+            	</div><!-- /borders -->
+            	<div id="edit" style="display: none;">
+            		<div id="brightness" data-role="controlgroup" data-type="horizontal" data-mini="true" class="normal">
+            		    <label>Brightness</label>
+                        <a href="#40" data-role="button" data-icon="plus" data-iconpos="left">Increase</a>
+                        <a href="#-40" data-role="button" data-icon="minus" data-iconpos="left">Decrease</a>
             		</div>
-            	</div><!--  /file  -->
+            	</div>
+            	<div id="graffiti" data-role="controlgroup" data-type="horizontal" style="display: none;">
+            		    <a id="black" href="#black">Black</a>
+                        <a id="white" href="#white">White</a>
+                        <a id="red" href="#red">Red</a>
+                        <a id="yellow" href="#yellow">Yellow</a>
+                        <a id="blue" href="#blue">Blue</a>
+                        <a id="green" href="#green">Green</a>
+            	</div><!-- /graffiti -->
             </div><!-- /tools -->
         </div><!-- /footer -->
     </div><!-- /page -->
@@ -159,6 +151,7 @@
     <div id="about" data-role="page">
         <div data-role="header">
             <h1>About UCam</h1>
+            <a href="#home" data-icon="arrow-l" data-transition="slidedown">Back</a>
         </div>
         <div data-role="content">
             <img src="logo.png" alt="Logo" width="280" height="96" />
