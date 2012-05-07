@@ -47,6 +47,14 @@
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>AhPMP/Ycs7AsBoPXb+yQPr56OKmG9RDk4EgqZdaMszc=</DigestValue>
 </Reference>
+<Reference URI="css/images/rotate_16.png">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>p/A/+Eotwjg0BdK+ngYjTweTloQmlN9mesUWal07Kio=</DigestValue>
+</Reference>
+<Reference URI="css/images/rotate_64.png">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>sloduzTnv7UoPVJnHxNKfC2pNXj+T/1ec47uyrVYG3U=</DigestValue>
+</Reference>
 <Reference URI="css/images/treeview/bg_home_content.gif">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>f5Nu3TGvLFs+AAXJpUQiKlfAmM+zRqFa6VB6hD0ENbA=</DigestValue>
@@ -113,7 +121,7 @@
 </Reference>
 <Reference URI="css/style.css">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>TMVW9+cJQU2RoiW7ckpLqZ72FLkHfByb4ys2FNy6zrA=</DigestValue>
+<DigestValue>2lrAIAZiP1ss4TJQ81JaSR+jmIG+nMbbVfndzmwiYM8=</DigestValue>
 </Reference>
 <Reference URI="icon.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -121,7 +129,7 @@
 </Reference>
 <Reference URI="index.html">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>a9OPbtovPsjfQwGIcm4wvwo3PY4VEk6tnNShr9Y94zo=</DigestValue>
+<DigestValue>m1ev/S8bGtKeZXrREsMsVq4wtlFLqCkUBpIOTnuNhSk=</DigestValue>
 </Reference>
 <Reference URI="js/ender.js">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -165,7 +173,7 @@
 </Reference>
 <Reference URI="js/main.js">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>VWB+SMlXUtuYTJlSaT8t4w0zW7ydFYw2k6TqTPUqygA=</DigestValue>
+<DigestValue>PcRzcf2mvxvcvHDqbXYvnQzKQJyzG3XSsPegFpFnM7o=</DigestValue>
 </Reference>
 <Reference URI="logo.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -308,9 +316,9 @@
 </Reference>
 </SignedInfo>
 <SignatureValue>
-oBvKqWlWuDq0t6Bq9HIQROKAehIwkBFWX6JuASYqBfAZyXBDsREHyT+oqCTGENV7NOGaAki0Yw8o
-g2L3LxZdW6Ptt1lF8/TPbyYNmogF3U2+ukHWWL7Mxp93+/BBN47ppNuEM46I7XvIObHl6Go4c20d
-lTFldeiq/ZAjUEdLByg=
+RRMdTQifHa78Ork1QTbiStfPHwnZjLiwL6SQGkPW53uq4NC4XFuClfGk6+1wmRQ+noKdfYm8LcZI
+tuuSN/al9gCwvE9AyenV7GqcMEOvfMkG8W2DCU58OYq/h5n8BZRhC+oIpfs8f0QMtarEY5F9fSSf
+w3Hnb39djrmZC3k+NfQ=
 </SignatureValue>
 <KeyInfo>
 <X509Data>

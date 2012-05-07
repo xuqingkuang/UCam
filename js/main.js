@@ -115,6 +115,9 @@ function initUITools () {
 			} else {
 				pencil.enabled = false;
 			}
+			
+			// Hide the control of decorations.
+			$('.decorControl').hide();
 		});
 	}
 
@@ -361,6 +364,12 @@ var init = function () {
         printError({message: 'Web browser does not support file system access'});
         $('div[data-id="browserFooter"]').hide(); // Hide footer in browser page.
     }
+    
+    // Set the mouse position
+    $(document).mousemove(function(e){
+        window.mouseXPos = e.pageX;
+        window.mouseYPos = e.pageY;
+    });
 };
 $(document).ready(init);
 
@@ -669,15 +678,56 @@ function putDecoration(img_path) {
 		'data-iconpos': "notext"
 	}).click(
 		function(e) { $(this).parent().remove(); }
-	).css({'display': 'none'});
-	closeBtn.button({'refresh': true});
-	container.append(closeBtn);
+	).css({'display': 'none'}).button({'refresh': true});
+	
+	// Create the rotate elements
+    var bPos = img.offset();
+    var bWidth = img.width();
+    var bHeight = img.height();
+
+    var center_top = (bHeight + bPos.top) - (bHeight / 2) - 16;
+    var center_left = (bWidth + bPos.left) - (bWidth / 2) - 16;
+    var intervalId;
+    
+	var rotateBtn = $('<a>').attr({
+		'class': 'decorControl rotateBtn', 'data-iconpos': "notext"
+	}).css({'display': 'none'}).mousedown(function(e) {
+        var bPos = img.offset();
+        var bWidth = img.width();
+        var bHeight = img.height();
+
+        var center_top = (bHeight + bPos.top) - (bHeight / 2);
+        var center_left = (bWidth + bPos.left) - (bWidth / 2);
+
+        intervalId = setInterval(function() {
+            y = center_top - window.mouseYPos + 32;
+            x = window.mouseXPos - center_left - 32;
+
+            rad = 360 - (180/Math.PI) * Math.atan2(y,x);
+
+            img.css("transform","rotate(" + rad + "deg)");
+            img.css("-moz-transform","rotate(" + rad + "deg)");
+            img.css("-webkit-transform","rotate(" + rad + "deg)");
+            img.css("-o-transform","rotate(" + rad + "deg)");
+
+            img.css("transform","rotate(" + rad + "deg)");
+            img.css("-moz-transform","rotate(" + rad + "deg)");
+            img.css("-webkit-transform","rotate(" + rad + "deg)");
+            img.css("-o-transform","rotate(" + rad + "deg)");
+        }, 100);
+    }).mouseup(function() {
+        clearInterval(intervalId);
+    }).button({'refresh': true});
+		
 	container.append(img);
+	container.append(closeBtn);
+	container.append(rotateBtn);
 	
 	// Bindding 
 	// img.resizable();
-	container.draggable();
-		
+	img.draggable();
+	rotateBtn.draggable({ containment: container });
+	
 	putDecorations.push(container);
 	$('div#editor > div#editorContent').append(container);
 }

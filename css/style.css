@@ -96,8 +96,9 @@ div#graffiti > a#green { background-color: green !important; }
 div#tools > div#decors .ui-btn-inner { padding-top: 4px; }
 
 div.decoration { position: absolute !important; top: 20px; left: 20px; z-index: 100; }
-div.decoration > a.closeBtn { position: relative; top: 10px; right: 10px; }
+div.decoration > a.decorControl { position: relative; }
 
+div.decoration > a.rotateBtn { background-image: url('./images/rotate_64.png'); background-size: 24px; }
 
 /* Border related elements */
 img.corner { z-index: 300; }
