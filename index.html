@@ -16,15 +16,15 @@
     <script type="text/javascript" src="./js/jquery.mobile-1.0.1.js"></script>
     
     <script type="text/javascript" src="./js/jquery-ui-1.8.20.custom.min.js"></script>
-    <script type="text/javascript" src="./js/jquery.ui.touch-punch.js"></script>
     
     <script type="text/javascript" src="./js/jquery.treeview.js"></script>
     <script type="text/javascript" src="./js/jquery.lazyload.js"></script>
+    <script type="text/javascript" src="./js/jquery.ui.touch-punch.js"></script>
     
     <script type="text/javascript" src="./js/main.js"></script>
     <script type="text/javscript">
-	$.mobile.transitionFallbacks.slideout = "slide"
-	</script>
+        $.mobile.transitionFallbacks.slideout = "slide"
+    </script>
 </head>
 
 <body>
@@ -35,8 +35,8 @@
         </div><!-- /header -->
 
         <div data-role="content">
-            <a href="#samples" data-role="button" data-icon="search" data-iconpos="right" data-transition="pop">Select a photo</a>
-            <a href="#about" data-role="button" data-icon="info" data-iconpos="right" data-transition="slideup">About</a>
+            <a href="#samples" data-role="button" data-icon="search" data-iconpos="right">Select a photo</a>
+            <a href="#about" data-role="button" data-icon="info" data-iconpos="right">About</a>
         </div><!-- /content -->
 
         <div data-role="footer"  data-id="copyright" data-position="fixed">
@@ -47,8 +47,8 @@
     <!-- Image Samples Page -->
     <div id="samples" data-role="page">
         <div data-role="header">
-            <h1>Samples</h1>
-            <a href="#home" data-icon="arrow-l" data-transition="fade">Back</a>
+            <h1>Photos</h1>
+            <a href="#home" data-icon="arrow-l">Back</a>
         </div>
         
         <div id="sampleGallery" data-role="content"></div>
@@ -56,7 +56,7 @@
         <div data-role="footer" data-id="browserFooter" data-position="fixed" data-theme="a">
             <div data-role="navbar">
                 <ul>
-                    <li><a href="#samples" class="ui-btn-active" data-transition="flip">Samples</a></li>
+                    <li><a href="#samples" class="ui-btn-active" data-transition="flip">Photos</a></li>
                     <li><a href="#browser" data-transition="flip">Browser</a></li>
                 </ul>
             </div><!-- /navbar -->
@@ -65,10 +65,10 @@
     
     
     <!-- File Browser Page -->
-    <div id="browser" data-role="page>
+    <div id="browser" data-role="page">
         <div data-role="header">
             <h1>Select a photo</h1>
-            <a href="#home" data-icon="arrow-l" data-transition="fade">Back</a>
+            <a href="#home" data-icon="arrow-l">Back</a>
         </div>
         <div data-role="content">
             <ul id="tree" class="filetree">
@@ -81,8 +81,8 @@
         <div data-role="footer" data-id="browserFooter" data-position="fixed" data-theme="a">
             <div data-role="navbar">
                 <ul>
-                    <li><a href="#samples" data-transition="flip">Samples</a></li>
-                    <li><a href="#browser" class="ui-btn-active"  data-transition="flip">Browser</a></li>
+                    <li><a href="#samples" data-transition="flip">Photos</a></li>
+                    <li><a href="#browser" class="ui-btn-active" data-transition="flip">Browser</a></li>
                 </ul>
             </div><!-- /navbar -->
         </div><!-- /footer -->
@@ -91,8 +91,8 @@
     <!-- Editor Page -->
     <div id="editor" data-role="page">
         <div data-role="header" data-position="fixed" data-theme="a">
-            <h1>Editor</h1>
-            <a href="#samples" data-icon="arrow-l" data-transition="slideup">Back</a>
+            <h1>UPhoto</h1>
+            <a href="#samples" data-icon="arrow-l">Back</a>
             <select name="fileActions" data-icon="gear" data-native-menu="false">
             	<option>Menu</option>
             	<option value="restore">Restore</option>
@@ -119,13 +119,12 @@
                 </ul>
             </div><!-- /navbar -->
             <div id="tools" data-role="navbar" data-grid="d" data-role="navigation" class="ui-navbar">
-                <div id="effects">
+                <div id="effects" class="noJQMStyle">
             	</div><!-- /effects -->
-            	<div id="decors" style="display: none;">
+            	<div id="decors" class="noJQMStyle" style="display: none;">
             		<!-- <a id="clearDecors" href="#clear" data-theme="c">Clear</a> -->
             	</div><!-- /graffiti -->
-            	<div id="borders" style="display: none;">
-            		<a id="clearBorders" href="#clear" data-theme="c">Clear</a>
+            	<div id="borders" class="noJQMStyle" style="display: none;">
             	</div><!-- /borders -->
             	<div id="edit" style="display: none;">
             		<div id="brightness" data-role="controlgroup" data-type="horizontal" data-mini="true" class="normal">
@@ -134,13 +133,7 @@
                         <a href="#-40" data-role="button" data-icon="minus" data-iconpos="left">Decrease</a>
             		</div>
             	</div>
-            	<div id="graffiti" data-role="controlgroup" data-type="horizontal" style="display: none;">
-            		    <a id="black" href="#black">Black</a>
-                        <a id="white" href="#white">White</a>
-                        <a id="red" href="#red">Red</a>
-                        <a id="yellow" href="#yellow">Yellow</a>
-                        <a id="blue" href="#blue">Blue</a>
-                        <a id="green" href="#green">Green</a>
+            	<div id="graffiti" class="noJQMStyle" style="display: none;">
             	</div><!-- /graffiti -->
             </div><!-- /tools -->
         </div><!-- /footer -->
@@ -151,7 +144,7 @@
     <div id="about" data-role="page">
         <div data-role="header">
             <h1>About UCam</h1>
-            <a href="#home" data-icon="arrow-l" data-transition="slidedown">Back</a>
+            <a href="#home" data-icon="arrow-l">Back</a>
         </div>
         <div data-role="content">
             <img src="logo.png" alt="Logo" width="280" height="96" />

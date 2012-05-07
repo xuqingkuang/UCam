@@ -11,6 +11,14 @@
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>ByI/WsowMu51HjxxTSBvNxQt4ofLiVJG+YeJX15IFHk=</DigestValue>
 </Reference>
+<Reference URI="css/buttons.css">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>LuPchrXzDpZO+y7gDIPZ90WZf5guwVSrtgNn5llUm1E=</DigestValue>
+</Reference>
+<Reference URI="css/farbtastic.css">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>/6DtLXaL7pxHt6biqau4jLxqFe+iJeBzwMFJD/TG+wk=</DigestValue>
+</Reference>
 <Reference URI="css/images/ajax-loader.gif">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>atFZeQWHru0uJZg1bqZZ/jJ8mZdvckOJmwEWlbmtUm8=</DigestValue>
@@ -18,6 +26,10 @@
 <Reference URI="css/images/ajax-loader.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>65aJnZYs9MhfT9o7tXqJw8hQ1dJKFIUrybNEdVoudks=</DigestValue>
+</Reference>
+<Reference URI="css/images/clear.gif">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>PHLLEKQBUugZlMzsffo5w/84QjAyIpbxA1vjGhEpWT4=</DigestValue>
 </Reference>
 <Reference URI="css/images/icons-18-black.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -101,7 +113,7 @@
 </Reference>
 <Reference URI="css/style.css">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>9m1fVCuckF+8lC/gWvZMslTa7mEwWx2S86d0RUxAqDk=</DigestValue>
+<DigestValue>TMVW9+cJQU2RoiW7ckpLqZ72FLkHfByb4ys2FNy6zrA=</DigestValue>
 </Reference>
 <Reference URI="icon.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -109,7 +121,19 @@
 </Reference>
 <Reference URI="index.html">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>8R0/WaZt8LE9PP2OPusT0cMZqBighSCkni/nUKDeHH0=</DigestValue>
+<DigestValue>a9OPbtovPsjfQwGIcm4wvwo3PY4VEk6tnNShr9Y94zo=</DigestValue>
+</Reference>
+<Reference URI="js/ender.js">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>koieKTJzsxcRkroq1BpzgSQgH6lmbJuJKxvqL7DGwSk=</DigestValue>
+</Reference>
+<Reference URI="js/farbtastic.js">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>plkGWlRzMt5TdwCQpYFotOW+Sw1nsdOqJYf0bhPW5uo=</DigestValue>
+</Reference>
+<Reference URI="js/iscroll-lite.js">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>TXk6pMJKxbc6GZTpub2UJ/piCbkPJQ9HQQ/h3BkPemQ=</DigestValue>
 </Reference>
 <Reference URI="js/jqm-docs.js">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -141,7 +165,7 @@
 </Reference>
 <Reference URI="js/main.js">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>YAX6trmUrRoR5s0sHUv/8OXAmMPbiXkdNOend3OdkRA=</DigestValue>
+<DigestValue>VWB+SMlXUtuYTJlSaT8t4w0zW7ydFYw2k6TqTPUqygA=</DigestValue>
 </Reference>
 <Reference URI="logo.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -284,9 +308,9 @@
 </Reference>
 </SignedInfo>
 <SignatureValue>
-ouxS/GjLAywTQhC8wLnC/RIjqcykQOYI8hMgeWMoBtDHX/zmXTtaueqWC091WwAgUsnbbW2D+toC
-MQdDqNtKBn3litPtwBq47U03bmn2Ezt3L9DGA18FLVzaxN1MySejQi07aTcogGMrCoO2O1uVclR3
-j9AIjvh/Ggukjt0CcVE=
+oBvKqWlWuDq0t6Bq9HIQROKAehIwkBFWX6JuASYqBfAZyXBDsREHyT+oqCTGENV7NOGaAki0Yw8o
+g2L3LxZdW6Ptt1lF8/TPbyYNmogF3U2+ukHWWL7Mxp93+/BBN47ppNuEM46I7XvIObHl6Go4c20d
+lTFldeiq/ZAjUEdLByg=
 </SignatureValue>
 <KeyInfo>
 <X509Data>

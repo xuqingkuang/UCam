@@ -26,27 +26,71 @@ div#editor > div[data-role="header"] > div.ui-select { position: absolute; top: 
 div#editor > div#editorContent { position: relative; padding: 0px; overflow: hidden; width: 480px; height: 480px; }
 div#editor .topLeft { position:absolute; top: 0px; left: 0px; }
 
+/* Global tools button stylesheets */
+
+div#editor > div[data-role="footer"] > div#tools {
+	overflow:auto;
+}
+
+div#editor > div[data-role="footer"] > div#tools  > div {
+	width: 1400px;
+	height:100%;
+	float:left;
+	padding:0;
+}
+
+div#editor > div[data-role="footer"] > div#tools > div > a {
+	display: inline-block;
+	position: 				relative;
+	color: white !important;
+	
+	text-decoration: 		none;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	text-overflow: clip;
+	
+	background-size: 128px 128px;
+	
+	width: 40px;
+	height: 40px;
+	padding: 				.5em .6em .4em .6em;
+	margin: 				.5em;
+}
+
+div#editor > div[data-role="footer"] > div#tools > div > a.ui-btn-active {
+	background-image: none;
+	background: none;
+	border: none;
+}
+
+div#editor > div[data-role="footer"] > div#tools > div > a.button {
+	border-top: 		2px solid rgba(255,255,255,0.8);
+	border-left: 		2px solid rgba(255,255,255,0.8);
+	
+	border-bottom: 		2px solid rgba(0,0,0,0.1);
+	border-right: 		2px solid rgba(0,0,0,0.1);
+	
+}
+
+div#editor > div[data-role="footer"] > div#tools > div > a:active {
+	border: 2px solid orange;
+}
+
 /* Effects tab */
 
-div#effects .ui-btn-text { color: white; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; }
-div#effects .ui-btn-inner { text-overflow: clip; }
-
-div#effects a { margin-left: 2px; }
-
-a#effect_blur { background-image: url("../res/filters/blur.png"); background-size: 64px 64px; width: 64px; height: 64px;}
-a#effect_grayscale { color: black; background-image: url("../res/filters/grayscale.png"); background-size: 64px 64px; width: 64px; height: 64px;}
-a#effect_sharpen { background-image: url("../res/filters/sharpen.png"); background-size: 64px 64px; width: 64px; height: 64px;}
-a#effect_sobel { background-image: url("../res/filters/sobel.png"); background-size: 64px 64px; width: 64px; height: 64px;}
-a#effect_threshold { background-image: url("../res/filters/threshold.png"); background-size: 64px 64px; width: 64px; height: 64px;}
+a#effect_blur { background-image: url("../res/filters/blur.png") !important; }
+a#effect_grayscale { background-image: url("../res/filters/grayscale.png") !important; }
+a#effect_sharpen { background-image: url("../res/filters/sharpen.png") !important; }
+a#effect_sobel { background-image: url("../res/filters/sobel.png") !important; }
+a#effect_threshold { background-image: url("../res/filters/threshold.png") !important; }
 
 /* Graffiti tab */
 
-div#graffiti > a#black { background: transparent; background-image: none; width: 51px;  background-color: black; }
-div#graffiti > a#white { background: transparent; background-image: none; width: 51px; background-color: white; }
-div#graffiti > a#red { background: transparent; background-image: none; width: 51px; background-color: red; }
-div#graffiti > a#yellow { background: transparent; background-image: none; width: 51px; background-color: yellow; }
-div#graffiti > a#blue { background: transparent; background-image: none; width: 51px; background-color: blue; }
-div#graffiti > a#green { background: transparent; background-image: none; width: 51px; background-color: green; }
+div#graffiti > a#black { background-color: black !important; }
+div#graffiti > a#white { background-color: white !important; }
+div#graffiti > a#red { background-color: red !important; }
+div#graffiti > a#yellow { background-color: yellow !important; }
+div#graffiti > a#blue { background-color: blue !important; }
+div#graffiti > a#green { background-color: green !important; }
 
 /* Decorations tab */
 div#tools > div#decors .ui-btn-inner { padding-top: 4px; }

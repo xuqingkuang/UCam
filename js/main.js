@@ -54,126 +54,216 @@ var detectBrowser = function() {
 };
 
 function initUITools () {
-	// Initial cancel button in editor page
-	$('#editor > div[data-role="header"] > a[href="#samples"]').click(function(e) {
-		var quitEditing = confirm('Are you sure to cancel ?');
-		
-		// When clicked cancel, ignore the decision.
-		if(!quitEditing) {
-			e.preventDefault();
-			return false;
-		}
-		
-		// When clicked OK, empty the image.
-		originImage.removeAttribute('src');
-		originImage.removeAttribute('width');
-		originImage.removeAttribute('height');
-	});
-	
-	// Initial toolbar in editor page
-	$('#tabToolbar a').click(function(e) {
-		var link_element = $(this);
-
-		// Highlight current tab
-		link_element.parent().parent().find('a').removeClass('ui-btn-active');
-		link_element.addClass('ui-btn-active');
-		
-		// Switch to the tab
-		var link_to = link_element.attr('href').substring(1, 100);
-		print('Switch to tab - ' + link_to);
-		$('#tools > div').hide();
-		$('#tools > div#' + link_to).show();
-		
-		// Show the contents of tab
-		$('div#editor > div[data-role="content"]').trigger('dblclick');
-		
-		// Specific code for graffiti
-		if(link_to == 'graffiti') {
-			print('And binding canvas mouse event for graffit');
-			pencil.bindCanvasEvents();
-		} else {
-			print('And unbinding canvas mouse event for cancel graffit feature');
-			pencil.unbindCanvasEvents();
-		}
-	});
-	
-	// Initial the edit features
-	// -- Normal filter adjustment
-	$('div#edit > div.normal > a').click(function(e) {
-		var link_element = $(this);
-		filter_name = link_element.parent().attr('id');
-		value = parseInt(link_element.attr('href').substring(1, 100));
-		print('Executing adjustment - ' + filter_name + ' - with argument - ' + value);
-		filters.drawFilterImage(filters[filter_name], image, value);
-	});
-	
-	// -- Initial the filters
-	var normalEffectEvent = function(e) {
-		var link_element = $(this);
-		var link_to = link_element.attr('href').substring(1, 100);
-		print('Applied normal filter - ' + link_to);
-		filters.drawFilterImage(filters[link_to], image);
-	};
-	
-	var convoluteEffectEvent = function(e) {
-		var link_element = $(this);
-		var link_to = link_element.attr('href').substring(1, 100);
-		print('Applied convolute filter - ' + link_to);
-		filters.drawFilterImage(filters.convolute, image, filters.convoluteArguments[link_to]);
-	};
-	
-	for (var i=0; i<filters.effects.length; i++) {
-		var name = filters.effects[i][0];
-		var type = filters.effects[i][1];
-		var shortName = filters.effects[i][2];
-		
-		var element = $('<a>').attr({'id': 'effect_' + name, 'href': '#' + name, 'data-role': 'button'});
-		element.html(shortName);
-
-		switch (type) {
-			case 'normal':
-				element.click(normalEffectEvent);
-				break;
-			case 'convolute':
-				element.click(convoluteEffectEvent);
-				break;
-		}
-		
-		element.button({'theme':'a', 'refresh': true});
-		$('#effects').append(element);
+	/* Initial cancel button in editor page */
+	function initBackButton () {
+		$('#editor > div[data-role="header"] > a[href="#samples"]').click(function(e) {
+			var quitEditing = confirm('Are you sure to cancel ?');
+			
+			// When clicked cancel, ignore the decision.
+			if(!quitEditing) {
+				e.preventDefault();
+				return false;
+			}
+			
+			// When clicked OK, empty the image.
+			originImage.removeAttribute('src');
+			originImage.removeAttribute('width');
+			originImage.removeAttribute('height');
+		});
 	}
 	
-	// -- Initial the color selector
-	$('div#graffiti > a').click(function(e) {
-		var link_element = $(this);
-		var link_to = link_element.attr('href').substring(1, 100);
-		print('Change pencil color to - ' + link_to);
-		pencil.color = link_to;
-		
-		// Change the color directly
-        context.fillStyle = pencil.color;
-        context.strokeStyle = pencil.color;
-	});
-	
-	// Initial the save/restore feature
-	$('select[name="fileActions"]').change(function(e) {
-		switch (this.value) {
-		case 'restore':
-			restoreImage();
-			break;
-		case 'save':
-			saveImage();
-			break;
-		}
+	/* Initial the save/restore feature */
+	function initFileFunctions() {
+		$('select[name="fileActions"]').change(function(e) {
+			switch (this.value) {
+			case 'restore':
+				restoreImage();
+				break;
+			case 'save':
+				saveImage();
+				break;
+			}
 
-		// Restore the select status
-		this.selectedIndex = 0;
-		$(this).selectmenu("refresh");
-	});
+			// Restore the select status
+			this.selectedIndex = 0;
+			$(this).selectmenu("refresh");
+		});
+	}
 	
-	// Initial the clear functions
-	$('div#decors > a#clearDecors').click(function(e) { clearDecorations(); });
-	$('div#borders > a#clearBorders').click(function(e) { clearBorders(); });
+	/* Initial toolbar in editor page */
+	function initTabToolbar() {
+		$('#tabToolbar a').click(function(e) {
+			var link_element = $(this);
+
+			// Highlight current tab
+			link_element.parent().parent().find('a').removeClass('ui-btn-active');
+			link_element.addClass('ui-btn-active');
+			
+			// Switch to the tab
+			var link_to = link_element.attr('href').substring(1, 100);
+			print('Switch to tab - ' + link_to);
+			$('#tools > div').hide();
+			$('#tools > div#' + link_to).show();
+			
+			// Show the contents of tab
+			$('div#editor > div[data-role="content"]').trigger('dblclick');
+			
+			// Specific code for graffiti
+			pencil.bindCanvasEvents();
+			if(link_to == 'graffiti') {
+				pencil.enabled = true;
+			} else {
+				pencil.enabled = false;
+			}
+		});
+	}
+
+	
+	/* Initial decorations in tab */
+	function initDecorations (num) {
+		// Binding the clear function
+		$('div#decors > a#clearDecors').click(function(e) { clearDecorations(); });
+		
+		// Add elements
+		i = 1;
+		while (i <= num) {
+			var img_name = i + '.png';
+			var img_path = './res/decors/' + img_name;
+			
+			var link = $('<a>').attr(
+				'href', 'javascript:putDecoration(\'' + img_path + '\')'
+			);
+			
+			var img = $('<img>').attr({
+				'class': 'decoration', 'src': img_path, 'alt': img_name,
+				'width': '48', 'height': '48'
+			});
+			
+			link.html(img);
+			// link.button({'theme': 'a', 'refresh': true});
+			$('div#decors').append(link);
+			
+			i += 1;
+		}
+	}
+
+	/* Initial the borders/frame tab */
+	function initBorders (num) {
+		// Initial the clear function
+		var clearBtnElement = $('<a>').attr({
+			'href': '#clear'
+		}).click(clearBorders).appendTo('div#borders');
+		$('<img>').attr('src', './css/images/clear.gif').appendTo(clearBtnElement);
+		
+		// Add elements
+		i = 1;	
+		while (i <= num) {
+			var img_path = './res/borders/' + i + '/preview.jpg';
+			
+			var link = $('<a>').attr(
+				'href', 'javascript:setBorder(\'' + i + '\')'
+			);
+			
+			var img = $('<img>').attr({
+				'class': 'border', 'src': img_path, 'alt': 'Border ' + i,
+				'width': '48', 'height': '48'
+			});
+			link.html(img);
+			// link.button({'theme': 'a', 'refresh': true});
+			$('div#borders').append(link);
+			
+			i += 1;
+		}
+	}
+	
+	/* Initial the adjustment features */
+	function initAdjustment() {
+		$('div#edit > div.normal > a').click(function(e) {
+			var link_element = $(this);
+			filter_name = link_element.parent().attr('id');
+			value = parseInt(link_element.attr('href').substring(1, 100));
+			print('Executing adjustment - ' + filter_name + ' - with argument - ' + value);
+			filters.drawFilterImage(filters[filter_name], image, value);
+		});
+		
+	}
+	
+	/* Initial the filter features */
+	function initFilters() {
+		var normalEffectEvent = function(e) {
+			var link_element = $(this);
+			var link_to = link_element.attr('href').substring(1, 100);
+			print('Applied normal filter - ' + link_to);
+			filters.drawFilterImage(filters[link_to], image);
+		};
+		
+		var convoluteEffectEvent = function(e) {
+			var link_element = $(this);
+			var link_to = link_element.attr('href').substring(1, 100);
+			print('Applied convolute filter - ' + link_to);
+			filters.drawFilterImage(filters.convolute, image, filters.convoluteArguments[link_to]);
+		};
+		
+		for (var i=0; i<filters.effects.length; i++) {
+			var name = filters.effects[i][0];
+			var type = filters.effects[i][1];
+			var shortName = filters.effects[i][2];
+			
+			var element = $('<a>').attr({'id': 'effect_' + name, 'href': '#' + name, 'class': 'button'});
+			element.html(shortName);
+
+			switch (type) {
+				case 'normal':
+					element.click(normalEffectEvent);
+					break;
+				case 'convolute':
+					element.click(convoluteEffectEvent);
+					break;
+			}
+			
+			// element.button({'theme':'a', 'refresh': true});
+			$('#effects').append(element);
+		}
+	}
+	
+	/* Initial the color selector */
+	function initGraffiti() {
+		var colorClickedHandler = function(e) {
+			var link_element = $(this);
+			var link_to = link_element.attr('href').substring(1, 100);
+			print('Change pencil color to - ' + link_to);
+			pencil.color = link_to;
+			
+			// Change the color directly
+	        context.fillStyle = pencil.color;
+	        context.strokeStyle = pencil.color;
+		};
+		
+		colors = ['black', 'white', 'red', 'yellow', 'blue', 'green'];
+		for (var i=0; i<colors.length; i++) {
+			var color = colors[i];
+			var element = $('<a>').attr({
+				'id': color,
+				'href': '#'+color
+			}).click(
+				colorClickedHandler
+			);
+			$('div#graffiti').append(element);
+		}
+	}
+	
+	// Start to run
+	initBackButton();
+	initFileFunctions();
+	initTabToolbar();
+	initDecorations(4);
+	initBorders(2);
+	initAdjustment();
+	initFilters();
+	initGraffiti();
+	
+	// iScroll 4 elements
+	// new iScroll('div#editor > div[data-role="footer"] > div#tools');
 }
 
 function initSampleGallery(num) {
@@ -222,50 +312,8 @@ function initSampleGallery(num) {
 		var lazyImages = $('img.lazy');
 		lazyImages.parent().parent().remove();
 	});
-}
-
-function initDecorations (num) {
-	i = 1;	
-	while (i <= num) {
-		var img_name = i + '.png';
-		var img_path = './res/decors/' + img_name;
-		
-		var link = $('<a>').attr(
-			'href', 'javascript:putDecoration(\'' + img_path + '\')'
-		);
-		
-		var img = $('<img>').attr({
-			'class': 'decoration', 'src': img_path, 'alt': img_name,
-			'width': '48', 'height': '48'
-		});
-		
-		link.html(img);
-		link.button({'theme': 'a', 'refresh': true});
-		$('div#decors').append(link);
-		
-		i += 1;
-	}
-}
-
-function initBorders (num) {
-	i = 1;	
-	while (i <= num) {
-		var img_path = './res/borders/' + i + '/preview.jpg';
-		
-		var link = $('<a>').attr(
-			'href', 'javascript:setBorder(\'' + i + '\')'
-		);
-		
-		var img = $('<img>').attr({
-			'class': 'border', 'src': img_path, 'alt': 'Border ' + i,
-			'width': '48', 'height': '48'
-		});
-		link.html(img);
-		link.button({'theme': 'a', 'refresh': true});
-		$('div#borders').append(link);
-		
-		i += 1;
-	}
+	
+	
 }
 
 //Initialize function
@@ -303,12 +351,6 @@ var init = function () {
     // Initial the sample gallery
     print('Initial the sample gallery');
     initSampleGallery(12); // Sample image num is 12 in current.
-    
-    // Initial the decorations in tools
-    initDecorations(4);
-    
-    // Initial the borders in tools
-    initBorders(2);
     
     // Initial the file system access
     print('Initial the tree view of file browser');
@@ -582,7 +624,20 @@ function moveImageToEditor (fullPath) {
     })(fullPath);
     reader.readAsDataURL(fullPath);
     
-    $.mobile.changePage('#editor', {transition: "slidedown"});
+    $.mobile.changePage('#editor');
+    
+    // FIXME: Remove JQuery Mobile automation works.
+    $('div#editor > div[data-role="footer"] > div#tools > div.noJQMStyle').find('*[class^="ui-"]').each(function(index, element) {
+        var classes = element.className.toString().split(' ');
+        newClass = [];
+        for (var i=0; i<classes.length; i++) {
+            var cls = classes[i];
+            if (!cls.match(/^ui-/)) {
+                newClass.append(cls);
+            }
+        }
+        element.className = newClass.join(' ');
+    });
 }
 
 
@@ -1090,6 +1145,8 @@ var Pencil = function(canvas, context) {
 	
     this.started = false;
     this.color = 'red';
+    
+    this.enabled = false;
 };
 
 Pencil.prototype.bindCanvasEvents = function() {
@@ -1097,13 +1154,6 @@ Pencil.prototype.bindCanvasEvents = function() {
 	this.canvas.live('mousemove touchmove',  ev_canvas);
 	this.canvas.live('mouseup touchend', ev_canvas);
 };
-
-Pencil.prototype.unbindCanvasEvents = function() {
-	this.canvas.die('mousedown touchstart', ev_canvas);
-	this.canvas.die('mousemove touchmove',  ev_canvas);
-	this.canvas.die('mouseup touchend', ev_canvas);
-};
-
 
 // This is called when you start holding down the mouse button.
 // This starts the pencil drawing.
@@ -1118,7 +1168,7 @@ Pencil.prototype.mousedown = function (ev) {
 // draws if the tool.started state is set to true (when you are holding down 
 // the mouse button).
 Pencil.prototype.mousemove = function (ev) {
-    if (pencil.started) {
+    if (pencil.started && pencil.enabled) {
         print('Drawing - Mouse/Finger move to - ' + ev._x + 'x' + ev._y);
         
         
