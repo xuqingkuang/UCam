@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" version="1.0 Beta" viewmodes="fullscreen" id="http://www.u-camera.com">  
+	<icon src="icon.png"/>  
+	<name>UCam</name> 
+	<content src="index.html"/>  
+	<description>Sample application for Tizen filesystem module.</description>  
+	<feature name="http://tizen.org/api/tizen" required="true"/>  
+	<feature name="http://tizen.org/api/filesystem" required="true"/>  
+	<feature name="http://tizen.org/api/filesystem.read" required="true"/>  
+	<feature name="http://tizen.org/api/filesystem.write" required="true"/>
+    <feature name="http://tizen.org/api/systeminfo" required="true"/> 
+</widget>
